@@ -14,13 +14,11 @@ int _printf(const char *format, ...)
 	if (format == NULL)
 		return (-1);
 	q[2] = '\0';
-	va_start(pa, format);
 	_putchar(-1);
 	while (format[0])
 	{
 		if (format[0] == '%')
 		{
-			structype = driver(format);
 			if (structype)
 			{
 				q[0] = '%';
