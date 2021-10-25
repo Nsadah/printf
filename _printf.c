@@ -11,7 +11,7 @@ int _printf(const char *format, ...)
 {
 	int count = 0;
 	va_list args;
-	int (function)(va_list) = NULL;
+	int (*function)(va_list) = NULL;
 
 	va_start(args, format);
 
@@ -20,7 +20,7 @@ int _printf(const char *format, ...)
 		if (*format == '%' && *(format + 1) != '%')
 		{
 			format++;
-			function = get_function(format);
+			function = function(format);
 			if (*(format) == '\0')
 				return (-1);
 			else if (function == NULL)
