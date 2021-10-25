@@ -7,7 +7,7 @@
  * @format: the string of characters to write to buffer
  * Return: an integer that counts how many writes to the buffer were made
  */
-iint _printf(const char *format, ...)
+int _printf(const char *format, ...)
 {
 	int count = 0;
 	va_list args;
