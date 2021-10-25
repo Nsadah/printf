@@ -41,6 +41,7 @@ int _printf(const char *format, ...)
 		else
 		{
 			_putchar(*format);
+			return (*formart);
 			count++;
 		}
 
