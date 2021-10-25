@@ -12,7 +12,7 @@
 int _printf(const char *format, ...)
 {
 	int i = 0, j = 0;
-	int (*f)(va_list);
+	int (f)(va_list);
 	va_list args;
 
 	va_start(args, format);
@@ -34,7 +34,7 @@ int _printf(const char *format, ...)
 				}
 				else
 				{
-					*f = get_func(&format[i + 1]);
+					f = get_func(&format[i + 1]);
 					j += f(args);
 					i++;
 				}
