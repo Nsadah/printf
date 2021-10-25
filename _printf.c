@@ -32,12 +32,7 @@ int _printf(const char *format, ...)
 					j += _putchar(format[i + 1]);
 					i++;
 				}
-				else
-				{
-					f = get_func(&format[i + 1]);
-					j += f(args);
-					i++;
-				}
+				
 			}
 		}
 		else
