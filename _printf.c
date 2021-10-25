@@ -7,65 +7,45 @@
  * @format: the string of characters to write to buffer
  * Return: an integer that counts how many writes to the buffer were made
  */
-int _printf(const char *format, ...)
+iint _printf(const char *format, ...)
 {
-	va_list arg_list;
-	int i_fmt, i_struct, flag, ret_val, ret_flag;
-	fmt_chars p_fmt[] = {
-		{"c", print_char},
-		{"s", print_string},
-		{"i", print_int},
-		{"d", print_int},
-		{"b", print_binary},
-		{NULL, NULL}
-	};
+	int count = 0;
+	va_list args;
+	int (*function)(va_list) = NULL;
 
-	flag = 0;
-	ret_val = 0;
-	va_start(arg_list, format);
+	va_start(args, format);
 
-	for (i_fmt = 0; format != NULL && format[i_fmt] != '\0'; i_fmt++)
+	while (*format)
 	{
-		if (format[i_fmt] == '%' && format[i_fmt + 1] != '%')
+		if (*format == '%' && *(format + 1) != '%')
 		{
-			for (i_struct = 0; i_struct < 5; i_struct++)
-			{
-				if (format[i_fmt + 1] == *p_fmt[i_struct].id)
-				{
-					ret_flag = p_fmt[i_struct].f(arg_list);
-					if (ret_flag == -1)
-						return (-1);
-					ret_val += ret_flag;
-					flag = 1;
-					i_fmt++;
-				}
-			}
-			if (flag == 0)
-			{
-				ret_flag = _putchar(format[i_fmt]);
-				if (ret_flag == -1)
-					return (-1);
-				ret_val += ret_flag;
-			}
-		}
-		else if (format[i_fmt] == '%' && format[i_fmt + 1] == '%')
-		{
-			ret_flag = _putchar('%');
-			if (ret_flag == -1)
+			format++;
+			function = get_function(format);
+			if (*(format) == '\0')
 				return (-1);
-			ret_val += ret_flag;
-			i_fmt++;
+			else if (function == NULL)
+			{
+				_putchar(*(format - 1));
+				_putchar(*format);
+				count += 2;
+			}
+			else
+				count += function(args);
+		}
+		else if (*format == '%' && *(format + 1) == '%')
+		{
+			format++;
+			_putchar('%');
+			count++;
 		}
 		else
 		{
-			ret_flag = _putchar(format[i_fmt]);
-			if (ret_flag == -1)
-				return (-1);
-			ret_val += ret_flag;
+			_putchar(*format);
+			count++;
 		}
+
+		format++;
 	}
-	va_end(arg_list);
-	if (format == NULL)
-		return (-1);
-	return (ret_val);
+	va_end(args);
+	return (count);
 }
